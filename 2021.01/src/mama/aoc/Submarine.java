@@ -1,9 +1,5 @@
 package mama.aoc;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.Collections;
 import java.util.List;
 
 public class Submarine {
@@ -32,12 +28,7 @@ public class Submarine {
     }
 
     public int[] readSonar(String pathToFile) {
-        List<String> lines = Collections.emptyList();
-        try {
-            lines = Files.readAllLines(Paths.get(pathToFile));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        List<String> lines = FileReader.readFile(pathToFile);
 
         int[] sonar = new int[lines.size()];
         for (int i = 0; i < lines.size(); i++) {

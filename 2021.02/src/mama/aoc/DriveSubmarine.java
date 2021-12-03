@@ -49,15 +49,11 @@ public class DriveSubmarine {
         List<String> lines;
         int howFar;
         Direction direction;
-        try {
-            for (String positionAndUnit : Files.readAllLines(Paths.get(directionPath))) {
-                String[] drive = positionAndUnit.split(" ");
-                howFar = Integer.parseInt(drive[1]);
-                direction = Direction.valueOf(drive[0].toUpperCase());
-                driveInstructions.add(new Drive(direction, howFar));
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
+        for (String positionAndUnit : FileReader.readFile(directionPath)) {
+            String[] drive = positionAndUnit.split(" ");
+            howFar = Integer.parseInt(drive[1]);
+            direction = Direction.valueOf(drive[0].toUpperCase());
+            driveInstructions.add(new Drive(direction, howFar));
         }
         System.out.println("Drive Instructions: " + driveInstructions.size());
         //System.out.println(driveInstructions.stream().collect(Collectors.toList()));
