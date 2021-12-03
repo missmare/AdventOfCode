@@ -13,15 +13,15 @@ public class DriveSubmarine {
     private ArrayList<Drive> driveInstructions = new ArrayList<>();
 
     private void changePosition(Drive drive) {
-        switch (drive.direction) {
+        switch (drive.getDirection()) {
             case UP:
-                position[0] = position[0] - drive.howFar;
+                position[0] = position[0] - drive.getHowFar();
                 break;
             case DOWN:
-                position[0] = position[0] + drive.howFar;
+                position[0] = position[0] + drive.getHowFar();
                 break;
             case FORWARD:
-                position[1] = position[1] + drive.howFar;
+                position[1] = position[1] + drive.getHowFar();
                 break;
             default:
                 throw new UnsupportedOperationException("Unsupported direction");
@@ -31,14 +31,14 @@ public class DriveSubmarine {
     private void changePositionOfAim(Drive drive) {
         switch (drive.direction) {
             case UP:
-                aim = aim - drive.howFar;
+                aim = aim - drive.getHowFar();
                 break;
             case DOWN:
-                aim = aim + drive.howFar;
+                aim = aim + drive.getHowFar();
                 break;
             case FORWARD:
-                position[1] = position[1] + drive.howFar;
-                position[0] = position[0] + drive.howFar * aim;
+                position[1] = position[1] + drive.getHowFar();
+                position[0] = position[0] + drive.getHowFar() * aim;
                 break;
             default:
                 throw new UnsupportedOperationException("Unsupported direction");
@@ -107,12 +107,6 @@ public class DriveSubmarine {
     private class Drive {
         private Direction direction;
         private int howFar;
-
-        Drive(String positionAndUnit) {
-            String[] drive = positionAndUnit.split(" ");
-            this.howFar = Integer.parseInt(drive[1]);
-            this.direction = Direction.valueOf(drive[0].toUpperCase());
-        }
 
         Drive(Direction direction, int unit) {
             this.direction = direction;
