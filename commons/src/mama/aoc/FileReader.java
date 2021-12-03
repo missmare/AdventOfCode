@@ -11,7 +11,7 @@ public class FileReader {
         try {
             return Files.readAllLines(Paths.get(path));
         } catch (IOException e) {
-            System.out.println("Failed to read file: " + path + ". It returned an error.");
+            System.out.println("Failed to read file: " + path + ". It returned an error. ");
             e.printStackTrace();
         }
         return null;
