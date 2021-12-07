@@ -21,6 +21,10 @@ public class BingoTable {
         }
     }
 
+    BingoTable() {
+        //empty table;
+    }
+
     public Pair<Integer, Boolean> checkNextNumber(int number) {
         dropNumber(number);
         return wins();
