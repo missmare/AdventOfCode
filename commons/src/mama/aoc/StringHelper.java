@@ -3,7 +3,7 @@ package mama.aoc;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HelperToManipulateStrings {
+public class StringHelper {
 
     /**
      * Split a single line by comma (,) and trim the result.

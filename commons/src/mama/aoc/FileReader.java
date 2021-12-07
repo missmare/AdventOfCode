@@ -3,10 +3,7 @@ package mama.aoc;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class FileReader {
 
@@ -37,7 +34,7 @@ public class FileReader {
         List<String> singleLine = FileReader.readFile(path);
         if (singleLine != null && singleLine.size() == 1) {
             String content = singleLine.get(0);
-            return HelperToManipulateStrings.splitAndTrim(content);
+            return StringHelper.splitAndTrim(content);
         } else {
             return singleLine;
         }
