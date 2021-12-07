@@ -6,7 +6,7 @@ import java.util.List;
 
 public class Crab {
     public int getMinimumFuelForPositions(String positions) {
-        List<Integer> horizontalNumbers = FileReader.convertToIntegerList(FileReader.readListFromFile(positions));
+        List<Integer> horizontalNumbers = HelperToManipulateStrings.convertToIntegerList(FileReader.readListOnSingleLineFromFile(positions));
 
         List<Integer> fuelToPosition = new ArrayList<>();
         int maxPosition = Collections.max(horizontalNumbers);
@@ -23,7 +23,7 @@ public class Crab {
     }
 
     public int getMinimalFuelForCrabEngines(String positions) {
-        List<Integer> horizontalNumbers = FileReader.convertToIntegerList(FileReader.readListFromFile(positions));
+        List<Integer> horizontalNumbers = HelperToManipulateStrings.convertToIntegerList(FileReader.readListOnSingleLineFromFile(positions));
 
         List<Integer> fuelToPosition = new ArrayList<>();
         int maxPosition = Collections.max(horizontalNumbers);
