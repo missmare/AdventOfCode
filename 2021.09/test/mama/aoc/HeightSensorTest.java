@@ -23,4 +23,18 @@ class HeightSensorTest {
         assertEquals(468, i, "The risk of the big map (sum of all lowest numbers, each plus 1) is 468");
     }
 
+    @Test
+    public void testBasinsSmall() {
+        HeightSensor submarine = new HeightSensor();
+        int i = submarine.findThreeBasins(smallPath);
+        assertEquals(1134, i);
+    }
+
+    @Test
+    public void testBasinsBig() {
+        HeightSensor submarine = new HeightSensor();
+        int i = submarine.findThreeBasins(bigPath);
+        assertEquals(1134, i);
+    }
+
 }
