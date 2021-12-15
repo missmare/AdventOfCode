@@ -31,4 +31,9 @@ public class Tuple<K> {
     public void setValue(int value) {
         this.value = value;
     }
+
+    @Override
+    public String toString() {
+        return "Tuple{" + "key=" + key + ", value=" + value + '}';
+    }
 }
