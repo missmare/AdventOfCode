@@ -24,4 +24,21 @@ class VentLinesTest {
         assertTrue(risk > 0);
     }
 
+    @Test
+    public void testHydrothermalRiskWithDiagonalSmall() {
+        VentLines submarine = new VentLines();
+        int risk = submarine.determineRiskInclDiagonal(smallTest);
+        System.out.println("there are " + risk + " points where at least two lines overlap");
+        assertEquals(12, risk);
+    }
+
+    @Test
+    public void testHydrothermalVentRiskWithDiagonalBig() {
+        VentLines submarine = new VentLines();
+        int risk = submarine.determineRiskInclDiagonal(bigTest);
+        System.out.println("There are " + risk + " overlapping points.");
+        assertTrue(risk > 0);
+    }
+
+
 }

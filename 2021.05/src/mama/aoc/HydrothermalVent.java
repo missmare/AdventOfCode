@@ -22,19 +22,12 @@ public class HydrothermalVent {
         ensureLowerToUpper();
     }
 
-    public HydrothermalVent(int x1, int x2, int y1, int y2) {
-        this.x1 = x1;
-        this.x2 = x2;
-        this.y1 = y1;
-        this.y2 = y2;
-    }
-
     public boolean isHorizontalOrVertical() {
         return isHorizontal() || isVertical();
     }
 
     public boolean isValid() {
-        return isHorizontal() || isVertical() || isDiagonal();
+        return isHorizontal() || isVertical() || isDiagonalSimple() || isDiagonalReverse();
     }
 
     /**
@@ -56,10 +49,36 @@ public class HydrothermalVent {
     }
 
     public boolean isDiagonal() {
-        int diffX = Math.abs(x2-x1);
-        int diffY = Math.abs(y2-y1);
+        return isDiagonalSimple() || isDiagonalReverse();
+    }
+
+    private boolean isDiagonalSimple() {
+        int diffX = x2 - x1;
+        int diffY = y2 - y1;
 
         return diffX == diffY;
+    }
+
+    private boolean isDiagonalReverse() {
+        int diffX = x2 - x1;
+        int diffY = y2 - y1;
+        return diffX == Math.negateExact(diffY);
+    }
+
+    public boolean isXAcrossUp() {
+        if (isDiagonalSimple() || isVertical()) {
+            return true;
+        } else {
+            return x2 > x1;
+        }
+    }
+
+    public boolean isYAcrossUp() {
+        if (isDiagonalSimple() || isHorizontal()) {
+            return true;
+        } else {
+            return y2 > y1;
+        }
     }
 
     public int getMaxX() {
@@ -88,6 +107,14 @@ public class HydrothermalVent {
         int y = y1;
         y1 = y2;
         y2 = y;
+    }
+
+    public int getLenght() {
+        if (isVertical()) {
+            return y2 - y1 + 1;
+        } else { //horizontal or diagonal
+            return Math.abs(x2 - x1) + 1;
+        }
     }
 
     public int getX1() {

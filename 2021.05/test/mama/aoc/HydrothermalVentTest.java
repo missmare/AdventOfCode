@@ -39,12 +39,15 @@ class HydrothermalVentTest {
     void testDiagonal() {
         HydrothermalVent line = new HydrothermalVent("1,2 -> 3,4");
         assertTrue(line.isDiagonal());
+        assertTrue(line.isValid());
 
         line = new HydrothermalVent("0,8 -> 8,0");
         assertTrue(line.isDiagonal());
+        assertTrue(line.isValid());
 
         line = new HydrothermalVent("0,8 -> 7,0");
         assertFalse(line.isDiagonal());
+        assertFalse(line.isValid());
     }
 
     @Test
@@ -61,10 +64,32 @@ class HydrothermalVentTest {
         assertEquals(1, line.getX1());
         assertEquals(7, line.getY1());
 
+        //reverse diagonal are anyway swaped
         line = new HydrothermalVent("7,1 -> 0,8");
-        assertEquals(1, line.getX1());
-        assertEquals(7, line.getY1());
+        assertEquals(8, line.getX1());
+        assertEquals(0, line.getY1());
+    }
 
+    @Test
+    public void testLineDirection() {
+        HydrothermalVent line = new HydrothermalVent("0,1 -> 4,5");
+        assertTrue(line.isDiagonal());
+        assertFalse(line.isHorizontalOrVertical());
+        assertTrue(line.isXAcrossUp());
+        assertTrue(line.isYAcrossUp());
+
+        //reverse diagonal lines are swaped anyway
+        line = new HydrothermalVent("7,1 -> 0,8");
+        assertTrue(line.isDiagonal());
+        assertFalse(line.isHorizontalOrVertical());
+        assertFalse(line.isXAcrossUp());
+        assertTrue(line.isYAcrossUp());
+
+        line = new HydrothermalVent("0,8 -> 7,1");
+        assertTrue(line.isDiagonal());
+        assertFalse(line.isHorizontalOrVertical());
+        assertTrue(line.isXAcrossUp());
+        assertFalse(line.isYAcrossUp());
 
     }
 

@@ -66,13 +66,26 @@ public class VentLines {
                     ventLines[x][vent.getY1()]++;
                 }
             } else if (vent.isDiagonal()) {
-
-
+                int x, y;
+                for (int i = 0; i < vent.getLenght(); i++) {
+                    if (vent.isXAcrossUp()) {
+                        x = vent.getX1() + i;
+                    } else {
+                        x = vent.getX1() - i;
+                    }
+                    if (vent.isYAcrossUp()) {
+                        y = vent.getY1() + i;
+                    } else {
+                        y = vent.getY1() - i;
+                    }
+                    ventLines[x][y]++;
+                }
             } else {
                 throw new UnsupportedOperationException("Vent is neither Horizontal, Vertical, nor diagonal. Please check: " + vent);
             }
 
         }
+
     }
 
 
