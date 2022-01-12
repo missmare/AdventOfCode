@@ -5,6 +5,8 @@ import java.util.List;
 
 public class BitsDecoder {
 
+    List<Integer> allVersions = new ArrayList<>();
+
     public int getVersionNumbers(String path) {
         List<String> strings = FileReader.readFile(path);
         if (strings.size() != 1) {
@@ -17,7 +19,7 @@ public class BitsDecoder {
 
     private int getSumOfVersionNumbers(String transmission) {
         StringBuilder binaryString = decodeVersionNumbers(transmission);
-        List<Integer> allVersions = getSinglePacket(binaryString.toString(), new ArrayList<>(), true);
+        getSinglePacket(binaryString.toString(), true);
         System.out.println(allVersions);
 
         int sumOfVersions = 0;
@@ -39,7 +41,7 @@ public class BitsDecoder {
             binary.append(appendStringToLength(Integer.toBinaryString(i), 4));
             pos += 1;
         }
-        System.out.println("Full Binary: \t\t" + binary.toString());
+        System.out.println("Full Binary: \t\t" + binary);
         return binary;
 
     }
@@ -68,16 +70,16 @@ public class BitsDecoder {
         return stringOfLength.toString();
     }
 
-    private List<Integer> getSinglePacket(String binaryString, List<Integer> allVersions, boolean isOuterPackage) {
+    private int getSinglePacket(String binaryString, boolean isOuterPackage) {
 
         int originalLength = binaryString.length();
         String version = binaryString.substring(0, 3);
         allVersions.add(Integer.parseInt(version, 2));
 
         System.out.println("Parsing string:\t\t" + binaryString);
-        System.out.println("Packet has version: \t" + version + "=" + Integer.parseInt(version, 2));
+        System.out.println("  Packet has version: \t" + version + "=" + Integer.parseInt(version, 2));
         String type = binaryString.substring(3, 6);
-        System.out.println("Type of packet is: \t\t" + type + "=" + Integer.parseInt(type, 2));
+        System.out.println("  Type of packet is: \t" + type + "=" + Integer.parseInt(type, 2));
 
         binaryString = binaryString.substring(6);
         //get next packet
@@ -93,52 +95,55 @@ public class BitsDecoder {
                 binaryString = binaryString.substring(5);
             }
             while (subPackageStart == 1);
-            System.out.println("Literal: " + literal.toString() + " as dec. number " + Integer.parseInt(literal.toString(), 2));
+            System.out.println("  Literal: " + literal + " as dec. number " + Integer.parseInt(literal.toString(), 2));
 
             if (isOuterPackage) {
                 int remaining = (originalLength - sizeOfPackages - 6) % 4;
                 binaryString = binaryString.substring(remaining);
-                System.out.println("remaining number of digits: " + remaining + " results in: " + binaryString);
+                System.out.println("  remaining number of digits: " + remaining + " results in: " + binaryString);
                 //recursive call if string is not empty
                 if (!binaryString.isEmpty()) {
-                    return getSinglePacket(binaryString, allVersions, false);
+                    return originalLength - remaining + getSinglePacket(binaryString, false);
                 }
             } else {
-                List<Integer> result = new ArrayList<>(1);
-                result.add(sizeOfPackages + 6);
-                return result; // by contract: this represents the length of the package
+                return sizeOfPackages + 6; // by contract: this represents the length of the package
             }
 
         } else { //operator
-            System.out.println("Operator");
+            System.out.println("  Operator");
             int lengthType = Integer.parseInt(binaryString.substring(0, 1));
             if (lengthType == 0) {
                 //next 15 bits tell how many bits are subpackages
                 int totalLenghtOfSubpackages = Integer.parseInt(binaryString.substring(1, 16), 2);
-                System.out.println("case 0, read 15 bits results in lenght: " + totalLenghtOfSubpackages);
+                System.out.println("    C0, read 15 bits results in lenght: " +binaryString.substring(1,16)+" "+  totalLenghtOfSubpackages);
                 binaryString = binaryString.substring(16, 16 + totalLenghtOfSubpackages);
-                System.out.println("remaining String: " + binaryString + " of length " + binaryString.length());
+                System.out.println("    C0, remaining String: " + binaryString + " of length " + binaryString.length());
                 int totalLength = 0;
                 while (totalLength < totalLenghtOfSubpackages) {
-                    List<Integer> lengthOfPackage = getSinglePacket(binaryString.substring(totalLength), allVersions, false);
-                    totalLength += lengthOfPackage.get(0); // by contract, the lenght of the package above
+                    int lengthOfPackage = getSinglePacket(binaryString.substring(totalLength), false);
+                    totalLength += lengthOfPackage; // by contract, the length of the package above
                 }
-                return allVersions;
+                System.out.println("Total lenght of C0 is " + (totalLength + 7));
+                return totalLength + 7;
                 //return getSinglePacket(binaryString, allVersions, false);
             } else { //length type is 1
                 int numberOfSubpackages = Integer.parseInt(binaryString.substring(1, 12), 2);
-                System.out.println("case 1. the number " + binaryString.substring(1, 12) + " defines the number of subpackages: " + numberOfSubpackages);
+                System.out.println("    C1. the number " + binaryString.substring(1, 12) + " defines the number of subpackages: " + numberOfSubpackages);
                 binaryString = binaryString.substring(12);
-                System.out.println("remaining string is " + binaryString);
+                int totalLengthOfSubpackages = 0;
+                System.out.println("    C1 remaining string is " + binaryString);
                 for (int i = 0; i < numberOfSubpackages; i++) {
-                    List<Integer> singlePacket = getSinglePacket(binaryString, allVersions, false);
-                    binaryString = binaryString.substring(singlePacket.get(0)); // by contract, this returns the length of the subpackage
+                    int lengthOfPackage = getSinglePacket(binaryString, false);
+                    totalLengthOfSubpackages += lengthOfPackage;
+                    System.out.println("    C1, reduce string by " + lengthOfPackage + " digits. ");
+                    binaryString = binaryString.substring(lengthOfPackage); // by contract, this returns the length of the subpackage
                 }
-                return allVersions;
+                return totalLengthOfSubpackages + 7;
             }
         }
         System.out.println(allVersions);
-        return allVersions;
+        System.out.println("shouldn't get here");
+        return 0;
     }
 
 }
