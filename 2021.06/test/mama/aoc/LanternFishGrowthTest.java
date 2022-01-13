@@ -12,22 +12,37 @@ class LanternFishGrowthTest {
     @Test
     public void testLanternFishVerySmall() {
         LanternFishGrowth lantern = new LanternFishGrowth();
-        int swarmSize = lantern.getSwarmSize(smallSwarm, 18);
+        long swarmSize = lantern.getSwarmSize(smallSwarm, 18);
         assertEquals(26, swarmSize);
     }
 
     @Test
     public void testLanternFishSmall() {
         LanternFishGrowth lantern = new LanternFishGrowth();
-        int swarmSize = lantern.getSwarmSize(smallSwarm, 80);
+        long swarmSize = lantern.getSwarmSize(smallSwarm, 80);
         assertEquals(5934, swarmSize);
     }
 
     @Test
     public void testLanternFishBig() {
         LanternFishGrowth lantern = new LanternFishGrowth();
-        int swarmSize = lantern.getSwarmSize(bigSwarm, 80);
+        long swarmSize = lantern.getSwarmSize(bigSwarm, 80);
         assertEquals(352195, swarmSize);
+    }
+
+    @Test
+    public void testLanternFishSmallForever() {
+        LanternFishGrowth lantern = new LanternFishGrowth();
+        long swarmSize = lantern.getSwarmSize(smallSwarm, 256);
+        assertEquals(26984457539L, swarmSize);
+    }
+
+    @Test
+    public void testLanternFishBigForever() {
+        LanternFishGrowth lantern = new LanternFishGrowth();
+        long swarmSize = lantern.getSwarmSize(bigSwarm, 256);
+        System.out.println("Swarm has size: " + swarmSize);
+        assertEquals(1600306001288L, swarmSize);
     }
 
 }

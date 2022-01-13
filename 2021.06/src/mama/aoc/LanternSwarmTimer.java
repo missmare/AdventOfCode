@@ -5,14 +5,14 @@ import java.util.Objects;
 public class LanternSwarmTimer {
 
     int timer;
-    int size;
+    long size;
 
     /**
      * constructor
      */
     public LanternSwarmTimer(int timer) {
         this.timer = timer;
-        this.size = 0;
+        this.size = 0L;
     }
 
     //Getter and setter
@@ -20,15 +20,15 @@ public class LanternSwarmTimer {
         return timer;
     }
 
-    public int getSize() {
+    public long getSize() {
         return size;
     }
 
-    public void setSize(int size) {
+    public void setSize(long size) {
         this.size = size;
     }
 
-    public void increaseSizeBy(int increase) {
+    public void increaseSizeBy(long increase) {
         this.size += increase;
     }
 
@@ -37,13 +37,13 @@ public class LanternSwarmTimer {
         this.size++;
     }
 
-    public int passDay() {
+    public long passDay() {
         this.timer--;
         if (this.timer < 0) {
             this.timer += 7;
             return this.getSize();
         }
-        return 0;
+        return 0L;
     }
 
     @Override

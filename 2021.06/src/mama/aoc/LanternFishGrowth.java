@@ -2,10 +2,9 @@ package mama.aoc;
 
 public class LanternFishGrowth {
 
-    public int getSwarmSize(String initialSwarm, int days) {
-        String[] lanternTimer = initialSwarm.split(",");
+    public long getSwarmSize(String initialSwarm, int days) {
         LanternSwarm lanternSwarm = new LanternSwarm();
-        for (String startTimer : lanternTimer) {
+        for (String startTimer : initialSwarm.split(",")) {
             lanternSwarm.addLanternWithTimer(Integer.parseInt(startTimer));
         }
 

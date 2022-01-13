@@ -25,8 +25,8 @@ public class LanternSwarm {
     }
 
     public void increaseDay() {
-        int newLanterns = swarmTimers.stream()
-                .mapToInt(LanternSwarmTimer::passDay)
+        long newLanterns = swarmTimers.stream()
+                .mapToLong(LanternSwarmTimer::passDay)
                 .sum();
 
         if (newLanterns > 0) {
@@ -55,9 +55,9 @@ public class LanternSwarm {
         swarmTimers = combinedTimers;
     }
 
-    public int countSwarmSize() {
+    public long countSwarmSize() {
         return swarmTimers.stream()
-                .mapToInt(LanternSwarmTimer::getSize).sum();
+                .mapToLong(LanternSwarmTimer::getSize).sum();
     }
 
     public int countTimers() {
