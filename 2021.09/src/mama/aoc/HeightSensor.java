@@ -4,18 +4,45 @@ import java.util.*;
 
 public class HeightSensor {
 
-    Tuple<Integer>[][] heights;
-    HeighSensorTuple[][] basins;
-    List<Integer> basinsSize = new ArrayList<>();
+    Tuple<Integer>[][] heights;  //map of heights (0 is low, 9 is high)
+    HeighSensorTuple[][] basins; //map of basins
+    Integer[] basinsSize;
 
     public int calculateHeightRisk(String path) {
         List<String> heightMap = FileReader.readFile(path);
 
         readHeightMap(heightMap);
+        //value is the risk of a low point (height + 1)
         calculateLowPoints();
         int risk = sumUpRisk();
-        System.out.println("Risk is: " + risk);
+        System.out.println("Total risk is: " + risk);
         return risk;
+    }
+
+    public int findThreeBasins(String path) {
+        List<String> heightMap = FileReader.readFile(path);
+        //get the height map from the file. a key corresponds to the height at this position.
+        readHeightMap(heightMap);
+        //get the low points (a low point is its height + 1, value at this tuple point).
+        calculateLowPoints();
+
+        //copy the height map and number the basins
+        assignLowPointsToHeightSensorTuples();
+        //get all lowest points
+        List<HeighSensorTuple> allLowPoints = findAllLowPoints();
+
+        //print the low points
+//        allLowPoints.stream().forEach(System.out::print);
+//        System.out.println();
+
+        findBasinsStartingWithLowPoints(allLowPoints);
+
+        Arrays.sort(basinsSize, Collections.reverseOrder());
+        int threeBasins = basinsSize[0] * basinsSize[1] * basinsSize[2];
+
+        System.out.println(Arrays.toString(basinsSize));
+        System.out.println("the three biggest basins multiplied are: " + threeBasins);
+        return threeBasins;
     }
 
     private void readHeightMap(List<String> heightMap) {
@@ -40,9 +67,6 @@ public class HeightSensor {
             for (int j = 0; j < deep; j++) {
                 boolean lowerAdjacentFound = false;
                 int currentHeight = heights[i][j].getKey();
-                //System.out.println("Current height: " + currentHeight + " at position [" + i + "][" + j + "]");
-
-                int compareHeight;
                 //compare upper
                 if (i > 0) {
                     lowerAdjacentFound = compareToCurrent(lowerAdjacentFound, currentHeight, heights[i - 1][j].getKey());
@@ -62,7 +86,6 @@ public class HeightSensor {
 
                 // this location has no lower adjacent location
                 if (!lowerAdjacentFound) {
-//                    System.out.println("no lower points for number " + currentHeight + " at position [" + i + "][" + j + "]");
                     heights[i][j].setValue(heights[i][j].getKey() + 1);
                 }
             }
@@ -72,7 +95,6 @@ public class HeightSensor {
     private boolean compareToCurrent(boolean lowerAdjacentFound, int currentHeight, int compareHeight) {
         if (!lowerAdjacentFound && compareHeight <= currentHeight) {
             lowerAdjacentFound = true;
-            //System.out.println("Compare number " + compareHeight + " is lower than current number " + currentHeight);
         }
         return lowerAdjacentFound;
     }
@@ -90,226 +112,103 @@ public class HeightSensor {
     private void printHeightMap() {
         for (int i = 0; i < heights.length; i++) {
             for (int j = 0; j < heights[i].length; j++) {
-                System.out.print("[" + i + "][" + j + "]: " + heights[i][j].getKey() + ", ");
+                System.out.print("[" + i + "," + j + "]: " + heights[i][j].getKey() + "," + heights[i][j].getValue() + " ; ");
             }
             System.out.println();
         }
     }
 
-    public int findThreeBasins(String path) {
-        List<String> heightMap = FileReader.readFile(path);
-        readHeightMap(heightMap);
-        //first, get the low points.
-        calculateLowPoints();
-        //set all basins to -1
-        assignLowPointsToSensorTuples();
-        //then assign basins:
-        assignBasinsRecursive();
-
-//        readHeightMap(heightMap);
-//        calculateBasins();
-//        basinsSize.sort(Collections.reverseOrder());
-        // System.out.println(basinsSize);
-        int threeBasins = basinsSize.get(0) * basinsSize.get(1) * basinsSize.get(2);
-        System.out.println("the three biggest basins multiplied are: " + threeBasins);
-        return threeBasins;
+    private void printBasinMap() {
+        for (int i = 0; i < basins.length; i++) {
+            for (int j = 0; j < basins[i].length; j++) {
+                System.out.print("[" + i + "," + j + "]: "
+                        + basins[i][j].getKey() + ","
+                        + basins[i][j].getBasin() + ";");
+                if ((i + j) < 20) {
+                    System.out.print(" ");
+                    if (basins[i][j].getBasin() < 10) {
+                        System.out.print(" ");
+                    } else if (basins[i][j].getBasin() < 100) {
+                        System.out.print(" ");
+                    }
+                }
+                System.out.print("\t");
+            }
+            System.out.println();
+        }
     }
 
-    private void assignLowPointsToSensorTuples() {
+    /**
+     * copy the height tuples to height sensor tuples, number the basins 1 up to x
+     */
+    private void assignLowPointsToHeightSensorTuples() {
         basins = new HeighSensorTuple[heights.length][heights[0].length];
+        int c = 0;
         for (int i = 0; i < heights.length; i++) {
             for (int j = 0; j < heights[i].length; j++) {
                 Tuple<Integer> tuple = heights[i][j];
+                int basinNumber = 0;
+                if (tuple.getValue() > 0) {
+                    basinNumber = ++c;
+                }
                 basins[i][j] = new HeighSensorTuple(tuple.getKey(), tuple.getValue(), i, j);
+                basins[i][j].setBasin(basinNumber);
             }
         }
+        basinsSize = new Integer[c];
+        Arrays.fill(basinsSize, 1);
     }
 
-    private void assignBasinsRecursive() {
-        LinkedList<HeighSensorTuple> fifo = new LinkedList<>();
-        for (int i = 0; i < basins.length; i++) {
-            for (int j = 0; j < basins[i].length; j++) {
-                HeighSensorTuple lowPoint = basins[i][j];
-                //low point is really a lowest point = start search
-                if (lowPoint.isLowPoint) {
-                    System.out.println("low point found at position [" + i + "][" + j + "]");
-                    basinsSize.add(1);
-                    int currentBasin = basinsSize.size();
-                    checkAdjacents(fifo, i, j, currentBasin);
+    private List<HeighSensorTuple> findAllLowPoints() {
+        List<HeighSensorTuple> allLowPoints = new ArrayList<>();
+        for (HeighSensorTuple[] line : basins) {
+            for (HeighSensorTuple location : line) {
+                if (location.isLowPoint) {
+                    allLowPoints.add(location);
                 }
             }
         }
-        while (!fifo.isEmpty()) {
-            HeighSensorTuple adjacent = fifo.removeFirst();
-            System.out.println("Adjacent found. check position [" + adjacent.getPositionX() + "][" + adjacent.getPositionY() + "]");
-            checkAdjacents(fifo, adjacent.getPositionX(), adjacent.getPositionY(), adjacent.getBasin());
+        return allLowPoints;
+    }
+
+    private void findBasinsStartingWithLowPoints(List<HeighSensorTuple> allLowPoints) {
+        for (HeighSensorTuple startingPoint : allLowPoints) {
+            LinkedList<HeighSensorTuple> fifo = new LinkedList<>();
+            checkHeightForBasins(fifo, startingPoint);
+            while (!fifo.isEmpty()) {
+                HeighSensorTuple checkPoint = fifo.removeFirst();
+                checkHeightForBasins(fifo, checkPoint);
+            }
         }
     }
 
-    private void checkAdjacents(LinkedList<HeighSensorTuple> fifo, int i, int j, int currentBasin) {
-        HeighSensorTuple adjacent;
-        //check up
-        if (i > 0) {
-            adjacent = basins[i - 1][j];
-            checkSingleAdjacent(fifo, currentBasin, adjacent);
-        }
-        //check low
-        if (i < basins.length - 1) {
-            adjacent = basins[i + 1][j];
-            checkSingleAdjacent(fifo, currentBasin, adjacent);
+    private void checkHeightForBasins(LinkedList<HeighSensorTuple> fifo, HeighSensorTuple checkPoint) {
+        //check upper
+        if (checkPoint.getPositionX() > 0) {
+            checkPoint(fifo, checkPoint.getPositionX() - 1, checkPoint.getPositionY(), checkPoint.getBasin());
         }
         //check left
-        if (j > 0) {
-            adjacent = basins[i][j - 1];
-            checkSingleAdjacent(fifo, currentBasin, adjacent);
+        if (checkPoint.getPositionY() > 0) {
+            checkPoint(fifo, checkPoint.getPositionX(), checkPoint.getPositionY() - 1, checkPoint.getBasin());
+        }
+        //check lower
+        if (checkPoint.getPositionX() < basins.length - 1) {
+            checkPoint(fifo, checkPoint.getPositionX() + 1, checkPoint.getPositionY(), checkPoint.getBasin());
         }
         //check right
-        if (j < basins[0].length - 1) {
-            adjacent = basins[i][j + 1];
-            checkSingleAdjacent(fifo, currentBasin, adjacent);
+        if (checkPoint.getPositionY() < basins[0].length - 1) {
+            checkPoint(fifo, checkPoint.getPositionX(), checkPoint.getPositionY() + 1, checkPoint.getBasin());
+        }
+
+    }
+
+    private void checkPoint(LinkedList<HeighSensorTuple> fifo, int positionX, int positionY, int basin) {
+        HeighSensorTuple checkPoint = basins[positionX][positionY];
+        if (checkPoint.isInABasin()) {
+            checkPoint.setBasin(basin);
+            basinsSize[basin - 1]++;
+            fifo.add(checkPoint);
         }
     }
 
-    private void checkSingleAdjacent(LinkedList<HeighSensorTuple> fifo, int basin, HeighSensorTuple adjacent) {
-        if (adjacent.getKey() == 9) {
-            //if it's a 9, do nothing
-            System.out.println("Position " + adjacent.getPositionX() + ", " + adjacent.getPositionY() + " is a 9, don't check.");
-        } else if (adjacent.getBasin() == 0) {
-            //do something
-            adjacent.basin = basin;
-            basinsSize.set(basin - 1, basinsSize.get(basin - 1));
-            fifo.add(adjacent);
-        }
-    }
-
-    private void calculateBasins() {
-        int length = heights.length;
-        int deep = heights[0].length;
-        for (int i = 0; i < length; i++) {
-            for (int j = 0; j < deep; j++) {
-                Tuple<Integer> currentTuple = heights[i][j];
-
-                if (currentTuple.getKey() == 9) {
-                    continue;
-                } else {
-                    int upperBasin = 0;
-                    int leftBasin = 0;
-                    int currentBasin = 0;
-                    Tuple<Integer> upperTuple = new Tuple<>(9, 0);
-                    Tuple<Integer> leftTuple = new Tuple<>(9, 0);
-                    //compare upper
-                    if (i > 0) {
-                        upperTuple = heights[i - 1][j];
-                        if (upperTuple.getKey() < 9) {
-                            upperBasin = upperTuple.getValue();
-                        }
-                    }
-                    //compare left
-                    if (j > 0) {
-                        leftTuple = heights[i][j - 1];
-                        if (leftTuple.getKey() < 9) {
-                            leftBasin = leftTuple.getValue();
-                        }
-                    }
-                    //check if both are the same:
-                    if (upperBasin > 0 && leftBasin > 0 && upperBasin != leftBasin) {
-                        System.out.println("Check basins! at position [" + i + "][" + j + "]. Upper: " + upperBasin + " vs. Left: " + leftBasin);
-                        //reassign "bigger" basin
-//                        if (upperBasin > leftBasin){
-//                            upperTuple.setValue(leftBasin);
-//                            Integer sizeOfUpperBasin = basinsSize.get(upperBasin - 1);
-//                            System.out.println("Size of upper basin: " + sizeOfUpperBasin);
-//                            basinsSize.set(leftBasin + 1, basinsSize.get(leftBasin + 1) + sizeOfUpperBasin);
-//                            basinsSize.set(upperBasin+1, 0);
-//                        } else {
-//                            System.out.println("think harder");
-//                        }
-                    } else if (upperBasin == leftBasin) {
-                        currentBasin = upperBasin;
-                    }
-                    //check if at least one basin is non-zero:
-                    if (upperBasin + leftBasin > 0) {
-                        currentBasin = upperBasin;
-                        if (currentBasin == 0) {
-                            currentBasin = leftBasin; // either of them should be 0, so assigning the sum should be ok
-                        }
-                    }
-                    //check if both neighbours (up and left) are 9
-                    else if (upperTuple.getKey() == 9 && leftTuple.getKey() == 9) {
-                        //if yes, then check the diagonal upper to the right number
-                        if (i > 0 && j < deep - 1) {
-                            Tuple<Integer> adjacentBasin = heights[i - 1][j + 1];
-                            Tuple<Integer> rightBasin = heights[i][j + 1];
-                            if (rightBasin.getKey() < 9 && adjacentBasin.getKey() < 9) {
-                                currentBasin = adjacentBasin.getValue();
-                            }
-                        }
-                    }
-                    if (currentBasin == 0) {
-                        basinsSize.add(1);
-                        currentBasin = basinsSize.size();
-                    } else {
-                        //System.out.println("Basin to search for " + (currentBasin-1));
-                        Integer currentBasinSize = basinsSize.get(currentBasin - 1);
-                        basinsSize.set(currentBasin - 1, currentBasinSize + 1);
-                    }
-                    heights[i][j].setValue(currentBasin);
-//                    System.out.println("Current basin: " + currentBasin + " for number " + currentTuple.getKey()
-//                            + " at position [" + i + "][" + j + "] has size " + basinsSize.get(currentBasin - 1));
-                }
-            }
-
-        }
-    }
-
-    private class HeighSensorTuple extends Tuple<Integer> {
-
-        int basin;
-        int positionX;
-        int positionY;
-        boolean isLowPoint;
-
-        public HeighSensorTuple(Integer key, int value, int positionX, int positionY, boolean isLowPoint) {
-            super(key, value);
-            this.positionX = positionX;
-            this.positionY = positionY;
-            this.isLowPoint = isLowPoint;
-        }
-
-        public HeighSensorTuple(Integer key, int value, int positionX, int positionY) {
-            super(key, value);
-            this.positionX = positionX;
-            this.positionY = positionY;
-            this.isLowPoint = false;
-            if (value > 0) this.isLowPoint = true;
-        }
-
-        private HeighSensorTuple(Integer key, int value) {
-            super(key, value);
-        }
-
-        public int getBasin() {
-            return basin;
-        }
-
-        public void setBasin(int basin) {
-            this.basin = basin;
-        }
-
-        public int getPositionX() {
-            return positionX;
-        }
-
-        public void setPositionX(int positionX) {
-            this.positionX = positionX;
-        }
-
-        public int getPositionY() {
-            return positionY;
-        }
-
-        public void setPositionY(int positionY) {
-            this.positionY = positionY;
-        }
-    }
 }

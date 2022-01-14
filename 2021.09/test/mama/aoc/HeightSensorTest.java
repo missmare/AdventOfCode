@@ -6,8 +6,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class HeightSensorTest {
 
-    private String smallPath = "/home/manuela/projects/AdventOfCode/2021.09/test/mama/aoc/SmallHeight.txt";
-    private String bigPath = "/home/manuela/projects/AdventOfCode/2021.09/test/mama/aoc/BigHeight.txt";
+    private final String smallPath = "/home/manuela/projects/AdventOfCode/2021.09/test/mama/aoc/SmallHeight.txt";
+    private final String bigPath = "/home/manuela/projects/AdventOfCode/2021.09/test/mama/aoc/BigHeight.txt";
 
     @Test
     public void testRiskOfHeightSmall() {
@@ -34,7 +34,7 @@ class HeightSensorTest {
     public void testBasinsBig() {
         HeightSensor submarine = new HeightSensor();
         int i = submarine.findThreeBasins(bigPath);
-        assertEquals(1134, i);
+        assertEquals(1280496, i);
     }
 
 }
