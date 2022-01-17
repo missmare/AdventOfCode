@@ -1,11 +1,11 @@
 package mama.aoc;
 
-import java.math.BigInteger;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Polymerization {
 
-    String template;
+    List<String> template = new ArrayList<>();
     Set<PolymerizationRule> polymerizationRules = new HashSet<>();
 
     public int applyRulesTimes(String path, int times) {
@@ -13,10 +13,11 @@ public class Polymerization {
 
         applyRules(times);
 
+        //count occurrence of letters
         Map<Character, Long> countLetters = countLetters();
-        //get min and max occurence
+        //get min and max occurrence
         Tuple<Character> maxTuple = new Tuple<>('+', 0);
-        Tuple<Character> minTuple = new Tuple<>('⁻', template.length());
+        Tuple<Character> minTuple = new Tuple<>('⁻', Integer.MAX_VALUE);
         for (Map.Entry<Character, Long> entry : countLetters.entrySet()) {
             if (entry.getValue() > maxTuple.getValue()) {
                 maxTuple = new Tuple<>(entry.getKey(), entry.getValue().intValue());
@@ -25,6 +26,7 @@ public class Polymerization {
                 minTuple = new Tuple<>(entry.getKey(), entry.getValue().intValue());
             }
         }
+        System.out.println("Template lenght: " + getTotalTemplateLenght());
         System.out.println("Max: " + maxTuple);
         System.out.println("Min: " + minTuple);
 
@@ -36,7 +38,7 @@ public class Polymerization {
 
     private void readTemplateAndRules(String path) {
         List<String> strings = FileReader.readFile(path);
-        template = strings.remove(0);
+        template.add(strings.remove(0));
         //remove the second line as well
         strings.remove(0);
 
@@ -48,123 +50,85 @@ public class Polymerization {
     }
 
     private void applyRules(int times) {
-        //max lenght
-        long finalLenght = template.length();
-        System.out.println("template is " + finalLenght + " chars long. " + template);
-        for (int i = 0; i < times; i++) {
-            finalLenght = 2 * finalLenght - 1;
-            System.out.println("Apply rules for the " + (i + 1) + " time produces a string of lenght "+ finalLenght);
-        }
+        //calculate max lenght
+//        long templateLength = getTotalTemplateLenght();
+//        System.out.println("when starting is template " + templateLength + " chars long: " + template);
+//        long power = MathematicCalculator.calculatePower(2, times);
+//        long finalLength = power * templateLength - (power - 1);
+//        System.out.println("Apply rules for " + times + " times, produces a string of length " + finalLength);
 
-        //cannot cast to int, number is too high
-        long arraySize = (finalLenght+1) / 2L;
-        System.out.println("half of the length is: " + arraySize);
-        int finalArraySize = (int) arraySize;
-        System.out.println("Cast to int with (brackets): " + finalArraySize);
-
-        Vector v = new Vector();
-        for (int i = 0; i < times; i++) {
-            for (int j = 0; j < template.length(); j++) {
-
+        StringBuilder newTemplate = new StringBuilder();
+        String currentPair;
+        List<String> templatesAfterRule = new LinkedList<>();
+        char remainingChar;
+        for (int i = 0; i < times; i++) { //iterate x-times to apply the rules
+            remainingChar = template.get(0).charAt(0);
+            newTemplate.append(remainingChar);
+            for (String singleTemplate : template) { //iterate over a part of the template
+                //for second line of template: add remaining char to check.
+                if (template.size() > 1 && !template.get(0).equals(singleTemplate)) {
+                    currentPair = String.copyValueOf(new char[]{remainingChar, singleTemplate.charAt(0)});
+                    checkRule(currentPair, newTemplate);
+                }
+                //iterate over the characters of this part
+                for (int j = 0; j < singleTemplate.length() - 1; j++) {
+                    currentPair = singleTemplate.substring(j, j + 2);
+                    checkRule(currentPair, newTemplate);
+                }
+                int imax = Integer.MAX_VALUE / 2;
+                remainingChar = singleTemplate.charAt(singleTemplate.length() - 1);
+                String templatePartAfterRules = newTemplate.toString();
+                newTemplate.delete(0, newTemplate.length()-1); //reset new template to empty
+                if (templatePartAfterRules.length() > imax) {
+                    templatesAfterRule.add(templatePartAfterRules.substring(0, imax));
+                    templatesAfterRule.add(templatePartAfterRules.substring(imax));
+                } else {
+                    templatesAfterRule.add(templatePartAfterRules);
+                }
             }
-        }
-
-        for (int i = 0; i < times; i++) {
-
+            //ensure size (and not only capacity) of list of templates
+            for (int j = template.size(); j < templatesAfterRule.size(); j++) {
+                template.add("");
+            }
+            Collections.copy(template, templatesAfterRule);
+            System.out.println("after step " + (i+1) + " template is " + getTotalTemplateLenght() + " long and has "+ template.size() + " elements.");
+//            template.stream().map((String s) -> s.length() + ",").forEach(System.out::print);
+//            System.out.println();
+//            System.out.println("  after step " + (i + 1) + " template is: '" + printFullTemplate() + "'");
+            templatesAfterRule.clear();
         }
     }
 
-    private void applyRules2(int times) {
-        //max lenght
-        long finalLenght = template.length();
-        System.out.println("template is " + finalLenght + " chars long. " + template);
-        for (int i = 0; i < times; i++) {
-            finalLenght = 2 * finalLenght - 1;
-            System.out.println("Apply rules for the " + (i + 1) + " time produces a string of lenght "+ finalLenght);
-        }
+    private String printFullTemplate() {
+        return template.stream().collect(Collectors.joining(","));
+    }
 
-        StringBuilder newTemplate = new StringBuilder();
-        newTemplate.setLength((int) finalLenght);
-        String currentPair;
-
-        for (int i = 0; i < times; i++) {
-            System.out.println("Apply rules for the " + (i + 1) + " time. New String is now long: " + newTemplate.length());
-            newTemplate.append(template.charAt(0));
-            for (int j = 0; j < template.length() - 1; j++) {
-                currentPair = template.substring(j, j + 2);
-                for (PolymerizationRule rule : polymerizationRules) {
-                    if (rule.matchPair(currentPair)) {
-                        newTemplate.append(rule.getStringAfterRule());
-                        break;
-                    }
-                }
+    private void checkRule(String currentPair, StringBuilder newTemplate) {
+        for (PolymerizationRule rule : polymerizationRules) { //apply the rules
+            if (rule.matchPair(currentPair)) {
+                newTemplate.append(rule.getStringAfterRule());
+                break;
             }
-            template = newTemplate.toString();
-
-            //System.out.println("   new template: " + template);
         }
-
-        //System.out.println("Template after applying the rules for " + times + " times: " + template);
     }
 
     private Map<Character, Long> countLetters() {
         Map<Character, Long> letterCount = new HashMap<>();
-        for (char currentLetter : template.toCharArray()) {
-            long currentLetterTimes = 0;
-            if (letterCount.containsKey(currentLetter)) {
-                currentLetterTimes = letterCount.get(currentLetter);
+        for (String partOfTemplate : template) {
+            for (char currentLetter : partOfTemplate.toCharArray()) {
+                long currentLetterTimes = 0;
+                if (letterCount.containsKey(currentLetter)) {
+                    currentLetterTimes = letterCount.get(currentLetter);
+                }
+                currentLetterTimes++;
+                letterCount.put(currentLetter, currentLetterTimes);
             }
-            currentLetterTimes++;
-            letterCount.put(currentLetter, currentLetterTimes);
         }
         return letterCount;
     }
 
-    public long applyLongRulesTimes(String path, int times) {
-        readTemplateAndRules(path);
-        applyRules(times);
-
-        Map<Character, Long> countLetters = countLetters();
-        //get min and max occurence
-        long maxAmount = 0;
-        long minAmount = template.length();
-        for (Map.Entry<Character, Long> entry : countLetters.entrySet()) {
-            if (entry.getValue() > maxAmount) {
-                maxAmount = entry.getValue();
-            }
-            if (entry.getValue() < minAmount) {
-                minAmount = entry.getValue();
-            }
-        }
-        System.out.println("Max: " + maxAmount);
-        System.out.println("Min: " + minAmount);
-
-        //calculate
-        System.out.println("Result: " + (maxAmount - minAmount));
-        return maxAmount - minAmount;
+    private long getTotalTemplateLenght() {
+        return template.stream().mapToLong(String::length).sum();
     }
 
-    public long applyLongRulesTimesExceedlong(String path, int times) {
-        readTemplateAndRules(path);
-        applyRules2(times);
-
-        Map<Character, Long> countLetters = countLetters();
-        //get min and max occurence
-        long maxAmount = 0;
-        long minAmount = template.length();
-        for (Map.Entry<Character, Long> entry : countLetters.entrySet()) {
-            if (entry.getValue() > maxAmount) {
-                maxAmount = entry.getValue();
-            }
-            if (entry.getValue() < minAmount) {
-                minAmount = entry.getValue();
-            }
-        }
-        System.out.println("Max: " + maxAmount);
-        System.out.println("Min: " + minAmount);
-
-        //calculate
-        System.out.println("Result: " + (maxAmount - minAmount));
-        return maxAmount - minAmount;
-    }
 }
