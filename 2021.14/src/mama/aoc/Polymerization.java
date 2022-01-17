@@ -77,13 +77,12 @@ public class Polymerization {
                 }
                 int imax = Integer.MAX_VALUE / 2;
                 remainingChar = singleTemplate.charAt(singleTemplate.length() - 1);
-                String templatePartAfterRules = newTemplate.toString();
                 newTemplate.delete(0, newTemplate.length()-1); //reset new template to empty
-                if (templatePartAfterRules.length() > imax) {
-                    templatesAfterRule.add(templatePartAfterRules.substring(0, imax));
-                    templatesAfterRule.add(templatePartAfterRules.substring(imax));
+                if (newTemplate.length() > imax) {
+                    templatesAfterRule.add(newTemplate.substring(0, imax));
+                    templatesAfterRule.add(newTemplate.substring(imax));
                 } else {
-                    templatesAfterRule.add(templatePartAfterRules);
+                    templatesAfterRule.add(newTemplate.toString());
                 }
             }
             //ensure size (and not only capacity) of list of templates

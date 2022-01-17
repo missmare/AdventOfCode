@@ -52,11 +52,12 @@ class PolymerizationTest {
     }
 
     @Test
-    public void testBigLenght() {
+    public void printOutputLength() {
+        DecimalFormat format = new DecimalFormat("###,###.##");
         for (int i = 0; i < 40; i++) {
-            long l = calculateFinalLenght(20, i);
-            double m = (l + 0.00) / Integer.MAX_VALUE;
-            System.out.println("Template length after step " + i + " is " + l + ". this is " + m + " times integer.max");
+            long finalLength = calculateFinalLenght(4, i);
+            System.out.println("step " + (i + 1) + " template of length " + format.format(finalLength)
+                    + ". This is x times integer.max: " + ((finalLength + (0.0)) / Integer.MAX_VALUE));
         }
     }
 
@@ -71,15 +72,6 @@ class PolymerizationTest {
             result *= base;
         }
         return result;
-    }
-
-    @Test
-    public void printOutputLength() {
-        DecimalFormat format = new DecimalFormat("###,###.##");
-        for (int i = 0; i < 40; i++) {
-            System.out.println("step " + (i + 1) + " template of length " + format.format(calculateFinalLenght(4, i)));
-            System.out.println("     " + (i + 1) + "                    " + (format.format(Integer.MAX_VALUE / 2)));
-        }
     }
 
 }
