@@ -5,7 +5,7 @@ import java.util.stream.Collectors;
 
 public class Polymerization {
 
-    List<String> template = new ArrayList<>();
+    List<String> template = new ArrayList<>(1);
     Set<PolymerizationRule> polymerizationRules = new HashSet<>();
 
     public int applyRulesTimes(String path, int times) {
@@ -57,11 +57,11 @@ public class Polymerization {
 //        long finalLength = power * templateLength - (power - 1);
 //        System.out.println("Apply rules for " + times + " times, produces a string of length " + finalLength);
 
-        StringBuilder newTemplate = new StringBuilder();
         String currentPair;
-        List<String> templatesAfterRule = new LinkedList<>();
         char remainingChar;
         for (int i = 0; i < times; i++) { //iterate x-times to apply the rules
+            List<String> templatesAfterRule = new ArrayList<>(2);
+            StringBuilder newTemplate = new StringBuilder();
             remainingChar = template.get(0).charAt(0);
             newTemplate.append(remainingChar);
             for (String singleTemplate : template) { //iterate over a part of the template
@@ -77,7 +77,7 @@ public class Polymerization {
                 }
                 int imax = Integer.MAX_VALUE / 2;
                 remainingChar = singleTemplate.charAt(singleTemplate.length() - 1);
-                newTemplate.delete(0, newTemplate.length()-1); //reset new template to empty
+               // String templatePartAfterRules = newTemplate.toString();
                 if (newTemplate.length() > imax) {
                     templatesAfterRule.add(newTemplate.substring(0, imax));
                     templatesAfterRule.add(newTemplate.substring(imax));
@@ -85,16 +85,19 @@ public class Polymerization {
                     templatesAfterRule.add(newTemplate.toString());
                 }
             }
+/*
             //ensure size (and not only capacity) of list of templates
             for (int j = template.size(); j < templatesAfterRule.size(); j++) {
                 template.add("");
             }
             Collections.copy(template, templatesAfterRule);
+*/
+            template = new ArrayList<>(templatesAfterRule);
             System.out.println("after step " + (i+1) + " template is " + getTotalTemplateLenght() + " long and has "+ template.size() + " elements.");
 //            template.stream().map((String s) -> s.length() + ",").forEach(System.out::print);
 //            System.out.println();
 //            System.out.println("  after step " + (i + 1) + " template is: '" + printFullTemplate() + "'");
-            templatesAfterRule.clear();
+            //templatesAfterRule.clear();
         }
     }
 
@@ -127,7 +130,8 @@ public class Polymerization {
     }
 
     private long getTotalTemplateLenght() {
-        return template.stream().mapToLong(String::length).sum();
+        return 0;
+        //return template.stream().mapToLong((String s) -> s.length()).sum();
     }
 
 }

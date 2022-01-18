@@ -16,7 +16,7 @@ public class PolymerizationRule {
     }
 
     public boolean matchPair(String checkPair) {
-        return pair.toLowerCase().contentEquals(checkPair.toLowerCase());
+        return pair.equalsIgnoreCase(checkPair);
     }
 
     public String getStringAfterRule() {
