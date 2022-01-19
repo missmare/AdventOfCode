@@ -5,11 +5,7 @@ import java.util.Objects;
 public class PairCounter {
 
     private PolymerizationPair pair;
-    private long counter = 0L;
-
-    public PairCounter(PolymerizationPair pair) {
-        this.pair = pair;
-    }
+    private long counter;
 
     public PairCounter(PolymerizationPair pair, Long l) {
         this.pair = pair;

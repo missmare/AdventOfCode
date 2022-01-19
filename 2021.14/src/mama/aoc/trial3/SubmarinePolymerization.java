@@ -10,18 +10,25 @@ public class SubmarinePolymerization {
     private String template;
     private Map<PolymerizationPair, PolymerizationRule> polymerizationRules = new HashMap<>();
 
-    private NumberFormat nf = NumberFormat.getInstance();
+    private final NumberFormat nf = NumberFormat.getInstance();
 
     public SubmarinePolymerization() {
         nf.setGroupingUsed(true);
     }
 
+    /**
+     * Calculate the difference of the max and min occurring characters after having applied the rules in path to the template in path x times.
+     *
+     * @param path  path to template and rules
+     * @param times apply the rules on the template x times
+     * @return difference of max and min occurring characters in template after having applied rules x times
+     */
     public long calculatePolymerization(String path, int times) {
         readInput(path);
         List<PairCounter> pairCounter = applyRules(times);
         Map<Character, Long> characterMap = countLetters(pairCounter);
 
-        //get min and max
+        //get min and max occurring character
         char minChar = '-';
         long minCount = Long.MAX_VALUE;
         char maxChar = '+';
@@ -45,7 +52,6 @@ public class SubmarinePolymerization {
         return maxCount - minCount;
     }
 
-
     private void readInput(String path) {
         List<String> strings = FileReader.readFile(path);
         template = (strings.get(0));
@@ -60,8 +66,8 @@ public class SubmarinePolymerization {
     private List<PairCounter> applyRules(int times) {
         //first split template into pairs.
         List<PairCounter> listOfPairs = splitIntoPairs(template);
-        //then apply rules x times
 
+        //then apply rules x times
         for (int i = 0; i < times; i++) {
             listOfPairs = applyRulesOnPairs(listOfPairs);
             System.out.println("Length of pairs after " + (i + 1) + " iterations: " + nf.format(getTotalLenght(listOfPairs)));

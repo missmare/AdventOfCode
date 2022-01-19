@@ -1,7 +1,5 @@
 package mama.aoc.trial3;
 
-import mama.aoc.AdventPair;
-
 public class PolymerizationRule {
 
     private PolymerizationPair pair;
