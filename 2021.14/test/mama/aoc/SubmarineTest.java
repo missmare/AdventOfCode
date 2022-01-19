@@ -1,14 +1,13 @@
 package mama.aoc;
 
-import mama.aoc.trial3.SubmarinePolymerization;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class SubmarineTest {
 
-    private String smallPath = "/home/manuela/projects/AdventOfCode/2021.14/test/mama/aoc/SmallPolyRules.txt";
-    String bigPath = "/home/manuela/projects/AdventOfCode/2021.14/test/mama/aoc/BigPolyRules.txt";
+    private final String smallPath = "/home/manuela/projects/AdventOfCode/2021.14/test/mama/aoc/SmallPolyRules.txt";
+    private final String bigPath = "/home/manuela/projects/AdventOfCode/2021.14/test/mama/aoc/BigPolyRules.txt";
 
     @Test
     public void testSmallPolymerization() {

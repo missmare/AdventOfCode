@@ -1,6 +1,4 @@
-package mama.aoc.trial3;
-
-import mama.aoc.FileReader;
+package mama.aoc;
 
 import java.text.NumberFormat;
 import java.util.*;

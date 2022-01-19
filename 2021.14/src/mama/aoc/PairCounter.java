@@ -1,4 +1,4 @@
-package mama.aoc.trial3;
+package mama.aoc;
 
 import java.util.Objects;
 
