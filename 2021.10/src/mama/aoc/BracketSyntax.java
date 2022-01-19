@@ -32,21 +32,23 @@ public class BracketSyntax {
     public long calculateIncomplete(String path) {
         List<String> brackets = FileReader.readFile(path);
 
-        List<Integer> finalizeLines = new ArrayList<>();
+        List<Long> finalizeLines = new ArrayList<>();
+        int corrupted = 0;
 
         for (String bracketLine : brackets) {
             String completeLine = lineCompletesWith(bracketLine);
             if (!"c".equals(completeLine)) { // ignore corrupted lines
-                int i = calculateBracketScore(completeLine);
+                long i = calculateBracketScore(completeLine);
                 finalizeLines.add(i);
+            } else {
+                corrupted++;
             }
         }
         Collections.sort(finalizeLines);
 
         System.out.println(finalizeLines);
-        System.out.println((finalizeLines.size())/2);
 
-        return finalizeLines.get((finalizeLines.size())/2);
+        return finalizeLines.get((finalizeLines.size()) / 2);
     }
 
     private char isLineCorruptedWith(String line) {
@@ -85,14 +87,13 @@ public class BracketSyntax {
         return complete.toString();
     }
 
-    private int calculateBracketScore(String finalizeIncompleteLine) {
-        int result = 0;
+    private long calculateBracketScore(String finalizeIncompleteLine) {
+        long result = 0L;
         for (char bracket : finalizeIncompleteLine.toCharArray()) {
-            int i = Brackets.getIncompleteBracketPoints(bracket);
+            long i = Brackets.getIncompleteBracketPoints(bracket);
             result = 5 * result + i;
         }
         return result;
     }
-
 
 }

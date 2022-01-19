@@ -12,29 +12,29 @@ class BracketSyntaxTest {
     @Test
     public void testCorruptedLines() {
         BracketSyntax submarine = new BracketSyntax();
-        long i  = submarine.calculateCorruption(smallPath);
+        long i = submarine.calculateCorruption(smallPath);
         assertEquals(26397, i);
     }
 
     @Test
     public void testCorruptedLinesBig() {
         BracketSyntax submarine = new BracketSyntax();
-        long i  = submarine.calculateCorruption(bigPath);
+        long i = submarine.calculateCorruption(bigPath);
         assertEquals(344193, i);
     }
 
     @Test
     public void testIncompleteLinesSmall() {
         BracketSyntax submarine = new BracketSyntax();
-        long i  = submarine.calculateIncomplete(smallPath);
+        long i = submarine.calculateIncomplete(smallPath);
         assertEquals(288957, i);
     }
 
     @Test
     public void testIncompleteLinesBig() {
         BracketSyntax submarine = new BracketSyntax();
-        long i  = submarine.calculateIncomplete(bigPath);
-        assertEquals(288957, i);
+        long i = submarine.calculateIncomplete(bigPath);
+        assertEquals(3241238967L, i);
     }
 
 }
