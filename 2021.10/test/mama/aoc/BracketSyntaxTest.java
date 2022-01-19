@@ -23,4 +23,18 @@ class BracketSyntaxTest {
         assertEquals(344193, i);
     }
 
+    @Test
+    public void testIncompleteLinesSmall() {
+        BracketSyntax submarine = new BracketSyntax();
+        long i  = submarine.calculateIncomplete(smallPath);
+        assertEquals(288957, i);
+    }
+
+    @Test
+    public void testIncompleteLinesBig() {
+        BracketSyntax submarine = new BracketSyntax();
+        long i  = submarine.calculateIncomplete(bigPath);
+        assertEquals(288957, i);
+    }
+
 }
