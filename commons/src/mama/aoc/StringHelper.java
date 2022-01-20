@@ -39,7 +39,7 @@ public class StringHelper {
      * @param stringList a list of strings containing numbers
      * @return a list of list of numbers (similar to Integer[][])
      */
-    public static List<List<Integer>> convertToNumberDoubleList(List<String> stringList) {
+    public static List<List<Integer>> convertToNumberListOfLists(List<String> stringList) {
         List<List<Integer>> intMap = new ArrayList<>(stringList.size());
         for (int i = 0; i < stringList.size(); i++) {
             String line = stringList.get(i);

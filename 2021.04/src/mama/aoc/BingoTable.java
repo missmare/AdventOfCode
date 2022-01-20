@@ -1,13 +1,10 @@
 package mama.aoc;
 
-
-import javafx.util.Pair;
-
 import java.util.List;
 
 public class BingoTable {
 
-    private Tuple<Integer>[][] table = new Tuple[5][5];
+    private final Tuple<Integer>[][] table = new Tuple[5][5];
 
     BingoTable(List<String> input) {
         if (input.size() != 5) {
@@ -25,12 +22,12 @@ public class BingoTable {
         //empty table;
     }
 
-    public Pair<Integer, Boolean> checkNextNumber(int number) {
+    public AdventPair<Integer, Boolean> checkNextNumber(int number) {
         dropNumber(number);
         return wins();
     }
 
-    private Pair<Integer, Boolean> wins() {
+    private AdventPair<Integer, Boolean> wins() {
         int droppedRow = 0;
         int droppedColumn = 0;
         int sumOfUnmarked = 0;
@@ -53,7 +50,7 @@ public class BingoTable {
             droppedColumn = 0;
             droppedRow = 0;
         }
-        return new Pair<>(sumOfUnmarked, won);
+        return new AdventPair<>(sumOfUnmarked, won);
     }
 
     private void dropNumber(int bingoNumber) {
@@ -77,7 +74,7 @@ public class BingoTable {
                 output.append(": ").append(table[i][j].getValue());
                 output.append("\t");
             }
-            System.out.println(output.toString());
+            System.out.println(output);
             output = new StringBuilder();
         }
         System.out.println("}");

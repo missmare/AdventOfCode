@@ -1,7 +1,5 @@
 package mama.aoc;
 
-import javafx.util.Pair;
-
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -17,13 +15,13 @@ public class Bingo {
         Set<BingoTable> bingoTables = readTables(strings);
         for (Integer nextNumber : bingoNumbers) {
             for (BingoTable table : bingoTables) {
-                Pair<Integer, Boolean> tableSuccess = table.checkNextNumber(nextNumber);
-                if (tableSuccess.getValue()) {
+                AdventPair<Integer, Boolean> tableSuccess = table.checkNextNumber(nextNumber);
+                if (tableSuccess.getSecond()) {
                     System.out.println("Table won.");
                     System.out.println(table.print());
-                    System.out.println("Final score: " + tableSuccess.getKey() + " with number: " + nextNumber);
-                    System.out.println("This results in " + tableSuccess.getKey() * nextNumber);
-                    return tableSuccess.getKey() * nextNumber;
+                    System.out.println("Final score: " + tableSuccess.getFirst() + " with number: " + nextNumber);
+                    System.out.println("This results in " + tableSuccess.getFirst() * nextNumber);
+                    return tableSuccess.getFirst() * nextNumber;
                 }
             }
         }
@@ -56,11 +54,11 @@ public class Bingo {
 
         for (Integer nextNumber : bingoNumbers) {
             for (BingoTable table : copyForIteration) {
-                Pair<Integer, Boolean> tableSuccess = table.checkNextNumber(nextNumber);
-                if (tableSuccess.getValue()) {
+                AdventPair<Integer, Boolean> tableSuccess = table.checkNextNumber(nextNumber);
+                if (tableSuccess.getSecond()) {
                     if (bingoTables.contains(table)) {
                         lastWinningBoard = table;
-                        lastFinalScoreUnmared = tableSuccess.getKey();
+                        lastFinalScoreUnmared = tableSuccess.getFirst();
                         lastBingoNumber = nextNumber;
 
                         if (bingoTables.size() == 1) {
