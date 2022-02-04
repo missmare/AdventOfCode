@@ -36,6 +36,10 @@ public class AdventPair<A, B> {
         return equals;
     }
 
+    public boolean correspondsToOther(A otherFirst, B otherSecond) {
+        return Objects.equals(this.first, otherFirst) && Objects.equals(this.second, otherSecond);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

@@ -15,7 +15,7 @@ class ChitonRiskTest {
         ChitonRisk submarine = new ChitonRisk();
         int i = submarine.calculateLowestRisk(verySmallPath);
         System.out.println("minimum risk very small: " + i);
-        assertEquals(7, i);
+        assertEquals(8, i);
     }
 
     @Test
