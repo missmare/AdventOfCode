@@ -82,10 +82,10 @@ public class Chiton {
                     //cost to move from current to this node
                     int currentRisk = adjacentNode.getRisk();
                     //cost to move from origin to this node
-                    int estimatedRisk = currentNode.getTotalRisk() + currentRisk;
+                    int riskToMoveHere = currentNode.getTotalRisk() + currentRisk;
 
-                    if (adjacentNode.getTotalRisk() > estimatedRisk) {
-                        adjacentNode.setTotalRisk(estimatedRisk);
+                    if (adjacentNode.getTotalRisk() > riskToMoveHere) {
+                        adjacentNode.setTotalRisk(riskToMoveHere);
                         queue.add(adjacentNode);
                     }
                 }

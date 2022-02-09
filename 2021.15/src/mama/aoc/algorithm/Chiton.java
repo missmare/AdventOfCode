@@ -36,26 +36,26 @@ public class Chiton {
             //set this position as visited
             visitedNodes[currentX][currentY] = true;
 
-            //up
-            if (currentY - 1 >= 0 && !currentPath.cameFrom(currentX, currentY - 1) && !visitedNodes[currentX][currentY - 1]) {
+/*            //up
+            if (currentY - 1 >= 0 && !visitedNodes[currentX][currentY - 1]) {
                 RiskPath newRisk = currentPath.moveTo(currentX, currentY - 1, chitonList);
 //                System.out.println("\tmove up to " + newRisk.getCurrentPosition() + " at risk " + newRisk.getTotalRisk());
                 possiblePaths.add(newRisk);
             }
             //left
-            if (currentX - 1 >= 0 && !currentPath.cameFrom(currentX - 1, currentY) && !visitedNodes[currentX - 1][currentY]) {
+            if (currentX - 1 >= 0 && !visitedNodes[currentX - 1][currentY]) {
                 RiskPath newRisk = currentPath.moveTo(currentX - 1, currentY, chitonList);
 //                System.out.println("\tmove left to " + newRisk.getCurrentPosition() + " at risk " + newRisk.getTotalRisk());
                 possiblePaths.add(newRisk);
-            }
+            }*/
             //down
-            if (currentY + 1 <= maxY && !currentPath.cameFrom(currentX, currentY + 1) && !visitedNodes[currentX][currentY + 1]) {
+            if (currentY + 1 <= maxY && !visitedNodes[currentX][currentY + 1]) {
                 RiskPath newRisk = currentPath.moveTo(currentX, currentY + 1, chitonList);
 //                System.out.println("\tmove down to " + newRisk.getCurrentPosition() + " at risk " + newRisk.getTotalRisk());
                 possiblePaths.add(newRisk);
             }
             //right
-            if (currentX + 1 <= maxX && !currentPath.cameFrom(currentX + 1, currentY) && !visitedNodes[currentX + 1][currentY]) {
+            if (currentX + 1 <= maxX && !visitedNodes[currentX + 1][currentY]) {
                 RiskPath newRisk = currentPath.moveTo(currentX + 1, currentY, chitonList);
 //                System.out.println("\tmove right to " + newRisk.getCurrentPosition() + " at risk " + newRisk.getTotalRisk());
                 possiblePaths.add(newRisk);
