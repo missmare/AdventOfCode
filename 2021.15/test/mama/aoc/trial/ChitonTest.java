@@ -12,26 +12,50 @@ class ChitonTest {
 
 
     @Test
-    void calculateChitonCave() {
+    void calculateChitonCaveFirst() {
         Chiton submarine = new Chiton();
-        int i = submarine.calculateChitonCave(verySmallPath);
+        int i = submarine.calculateLowestRisk(verySmallPath);
         System.out.println("Risk is: " + i);
         assertEquals(8, i);
     }
 
     @Test
-    void calculateChitonCaveSmall() {
+    void calculateChitonCaveSmallFirst() {
         Chiton submarine = new Chiton();
-        int i = submarine.calculateChitonCave(smallPath);
+        int i = submarine.calculateLowestRisk(smallPath);
         System.out.println("Risk is: " + i);
         assertEquals(40, i);
     }
 
     @Test
-    void calculateChitonCaveBig() {
+    void calculateChitonCaveBigFirst() {
         Chiton submarine = new Chiton();
-        int i = submarine.calculateChitonCave(bigPath);
+        int i = submarine.calculateLowestRisk(bigPath);
         System.out.println("Risk is: " + i);
         assertEquals(696, i);
+    }
+
+    @Test
+    void calculateChitonCaveSecond() {
+        Chiton submarine = new Chiton();
+        int i = submarine.calculateBigChitonCave(verySmallPath);
+        System.out.println("Risk is: " + i);
+        assertEquals(101, i);
+    }
+
+    @Test
+    void calculateChitonCaveSmallSecond() {
+        Chiton submarine = new Chiton();
+        int i = submarine.calculateBigChitonCave(smallPath);
+        System.out.println("Risk is: " + i);
+        assertEquals(315, i);
+    }
+
+    @Test
+    void calculateChitonCaveBigSecond() {
+        Chiton submarine = new Chiton();
+        int i = submarine.calculateBigChitonCave(bigPath);
+        System.out.println("Risk is: " + i);
+        assertEquals(2952, i);
     }
 }

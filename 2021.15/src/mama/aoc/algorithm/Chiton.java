@@ -23,7 +23,6 @@ public class Chiton {
         possiblePaths.add(currentPath);
         while (!currentPath.isAtPosition(maxX, maxY) && !possiblePaths.isEmpty()) {
             currentPath = possiblePaths.remove(0);
-//            System.out.println("Step " + step++ + " choose first of "+ possiblePaths.size() +  " elements. From risk " + currentPath.getTotalRisk() + " at Position " + currentPath.getCurrentPosition());
 
             if (currentPath.isAtPosition(maxX, maxY)) {
                 return currentPath.getTotalRisk();

@@ -50,6 +50,6 @@ public class Node implements Comparable<Node> {
 
     @Override
     public String toString() {
-        return "#" + x + "," + y + ": " + risk ;
+        return "{" + x + "," + y + "}: +" + risk +'='+ totalRisk ;
     }
 }

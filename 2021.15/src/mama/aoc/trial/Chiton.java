@@ -13,29 +13,36 @@ public class Chiton {
     private Node origin;
     private Node destination;
 
-    public int calculateChitonCave(String path) {
+    public int calculateLowestRisk(String path) {
         List<String> input = FileReader.readFile(path);
 
-        initialize(input);
-
-        int minPathLenghth = applyAlgorithm();
-        return minPathLenghth;
+        initialize(input, 1);
+        return applyAlgorithm();
     }
 
-    private void initialize(List<String> inputs) {
-        maxX = inputs.size();
-        maxY = inputs.get(0).length();
+    public int calculateBigChitonCave(String path) {
+        List<String> input = FileReader.readFile(path);
+        initialize(input, 5);
+        return applyAlgorithm();
+    }
+
+    private void initialize(List<String> inputs, int numberOfTiles) {
+        int initialX = inputs.size();
+        int initialY = inputs.get(0).length();
+
+        maxX = initialX * numberOfTiles;
+        maxY = initialY * numberOfTiles;
 
         riskMap = new Node[maxX][maxY];
         for (int y = 0; y < maxY; y++) {
-            int tileY = y / maxX;
-            char[] numbers = inputs.get(y).toCharArray();
+            int tileY = y / initialY;
+            char[] numbers = inputs.get(y % initialY).toCharArray();
 //            System.out.println(Arrays.toString(numbers));
             for (int x = 0; x < maxX; x++) {
-                //calculate the risk for the n-tile
-                int tileX = x / maxX;
+                //calculate the risk for, increase for the n-tile
+                int tileX = x / initialX;
                 int riskIncrement = tileX + tileY;
-                int originalRisk = Integer.parseInt(Character.toString(numbers[x]));
+                int originalRisk = Integer.parseInt(Character.toString(numbers[x % initialX]));
                 int baseRisk = originalRisk + riskIncrement;
                 int modRisk = baseRisk % 10;
                 int divRisk = baseRisk / 10;
@@ -43,8 +50,8 @@ public class Chiton {
 
 /*                System.out.println("tileX: " + tileX + ", tileY: " + tileY
                         + ", riskIncrement: " + riskIncrement
-                        + ", originalRisk: " + numbers[x]
-                        + ", parsed: " + originalRisk);*/
+                        + ", risk: " + originalRisk
+                        + ", -> " + realRisk);*/
                 riskMap[x][y] = new Node(x, y, realRisk);
             }
         }
@@ -52,7 +59,14 @@ public class Chiton {
         origin = riskMap[0][0];
         destination = riskMap[maxX - 1][maxY - 1];
 
-//        System.out.println(Arrays.deepToString(riskMap));
+
+    }
+
+    private void printRiskMap() {
+        for (Node[] riskArray :
+                riskMap) {
+            System.out.println(Arrays.toString(riskArray));
+        }
     }
 
     private int applyAlgorithm() {
@@ -77,11 +91,12 @@ public class Chiton {
                 }
             }
         }
+        printRiskMap();
         return destination.getTotalRisk();
     }
 
     private Set<Node> getAdjacentNodes(Node node) {
-        Set<Node> adjacentNodes = new HashSet<>();
+        Set<Node> adjacentNodes = new HashSet<>(4);
         int x = node.getX();
         int y = node.getY();
         if (isWithinRange(x, y - 1)) { // add up
