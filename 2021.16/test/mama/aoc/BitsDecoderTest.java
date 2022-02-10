@@ -210,8 +210,14 @@ class BitsDecoderTest {
     public void testVersionNumbersBig() {
         BitsDecoder submarine = new BitsDecoder();
         int totalVersionNumber = submarine.getVersionNumbers(bigPath);
-        assertEquals(6, totalVersionNumber);
+        assertEquals(960, totalVersionNumber);
     }
 
+
+    @Test
+    public void testNumberConversion() {
+        long i = Long.parseLong("010010110100101101100110101100111111", 2);
+        assertEquals(20211723071L, i);
+    }
 
 }

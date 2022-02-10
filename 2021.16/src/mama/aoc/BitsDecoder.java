@@ -94,7 +94,7 @@ public class BitsDecoder {
                 binaryString = binaryString.substring(5);
             }
             while (subPackageStart == 1);
-            System.out.println("  Literal: " + literal + " as dec. number " + Integer.parseInt(literal.toString(), 2));
+            System.out.println("  Literal: " + literal + " as dec. number " + Long.parseLong(literal.toString(), 2));
 
             if (isOuterPackage) {
                 int remaining = (originalLength - sizeOfPackages - 6) % 4;
@@ -131,6 +131,7 @@ public class BitsDecoder {
                 int totalLengthOfSubpackages = 0;
                 System.out.println("    C1, remaining string is " + binaryString);
                 for (int i = 0; i < numberOfSubpackages; i++) {
+                    System.out.println("#subpackage="+(i+1));
                     int lengthOfPackage = getSinglePacket(binaryString, false);
                     totalLengthOfSubpackages += lengthOfPackage;
                     System.out.println("    C1, reduce string by " + lengthOfPackage + " digits. ");
