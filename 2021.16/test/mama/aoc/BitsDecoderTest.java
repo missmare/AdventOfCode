@@ -15,6 +15,15 @@ class BitsDecoderTest {
     String smallPath5 = "/home/manuela/projects/AdventOfCode/2021.16/test/mama/aoc/SmallTransmission5.txt";
     String bigPath = "/home/manuela/projects/AdventOfCode/2021.16/test/mama/aoc/BigTransmission.txt";
 
+    String secondPath1 = "/home/manuela/projects/AdventOfCode/2021.16/test/mama/aoc/Second1.txt";
+    String secondPath2 = "/home/manuela/projects/AdventOfCode/2021.16/test/mama/aoc/Second2.txt";
+    String secondPath3 = "/home/manuela/projects/AdventOfCode/2021.16/test/mama/aoc/Second3.txt";
+    String secondPath4 = "/home/manuela/projects/AdventOfCode/2021.16/test/mama/aoc/Second4.txt";
+    String secondPath5 = "/home/manuela/projects/AdventOfCode/2021.16/test/mama/aoc/Second5.txt";
+    String secondPath6 = "/home/manuela/projects/AdventOfCode/2021.16/test/mama/aoc/Second6.txt";
+    String secondPath7 = "/home/manuela/projects/AdventOfCode/2021.16/test/mama/aoc/Second7.txt";
+    String secondPath8 = "/home/manuela/projects/AdventOfCode/2021.16/test/mama/aoc/Second8.txt";
+
     /**
      * Input:   D2FE28
      * Binary:  110100101111111000101000
@@ -212,11 +221,11 @@ class BitsDecoderTest {
         assertEquals(960, totalVersionNumber);
     }
 
-
     @Test
-    public void testNumberConversion() {
-        long i = Long.parseLong("010010110100101101100110101100111111", 2);
-        assertEquals(20211723071L, i);
+    public void testSecond1() {
+        BitsDecoder submarine = new BitsDecoder();
+        int totalVersionNumber = submarine.getVersionNumbers(secondPath1);
+        assertEquals(14, totalVersionNumber);
     }
 
 }
