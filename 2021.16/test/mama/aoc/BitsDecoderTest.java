@@ -35,9 +35,9 @@ class BitsDecoderTest {
      * Version: 1
      * Type:    6
      * Read Operator 0 (length of result is written in 15  bits)
-     *   length:    27
-     *   binary:    A: 11010001010 B: 0101001000100100
-     *              A: v6, t4, l10; B: v2, t4, l20
+     * length:    27
+     * binary:    A: 11010001010 B: 0101001000100100
+     * A: v6, t4, l10; B: v2, t4, l20
      */
     @Test
     public void testVersionNumbers1b() {
@@ -52,9 +52,9 @@ class BitsDecoderTest {
      * Version: 7
      * type:    3
      * Read operator 1 (number of packets is written in 11 bits)
-     *   packets:   3
-     *   binary:    A: 01010000001 B: 10010000010 C: 00110000011 00000
-     *              A: v2, t4, l1  B: v4, t4, l2  C: v1, t4, l3
+     * packets:   3
+     * binary:    A: 01010000001 B: 10010000010 C: 00110000011 00000
+     * A: v2, t4, l1  B: v4, t4, l2  C: v1, t4, l3
      */
     @Test
     public void testVersionNumbers1c() {
@@ -69,15 +69,14 @@ class BitsDecoderTest {
      * version: 4
      * type:    2
      * Read operator 1 (1 subpackage)
-     *   binary:    A: 001 010 1 00000000001 101010000000000000101111010001111000
-     *   Read operator 1 (1 subpackage)
-     *     binary:      B: 101 010 0 000000000001011 11010001111000
-     *     Read operator 0 (read 15 bits for length: subpackages are 11 bits long)
-     *       binary:    11010001111
-     *       version:   6
-     *       type:      4 (literal)
-     *       literal:   01111 --> 1111 = 15
-     *
+     * binary:    A: 001 010 1 00000000001 101010000000000000101111010001111000
+     * Read operator 1 (1 subpackage)
+     * binary:      B: 101 010 0 000000000001011 11010001111000
+     * Read operator 0 (read 15 bits for length: subpackages are 11 bits long)
+     * binary:    11010001111
+     * version:   6
+     * type:      4 (literal)
+     * literal:   01111 --> 1111 = 15
      */
     @Test
     public void testVersionNumbers2() {
@@ -92,30 +91,30 @@ class BitsDecoderTest {
      * Version: 3
      * Type:    0
      * Read Operator 1 (# of subpackages in 11 bits: 00000000010 = 2)
-     *   binary:    000 000 0 000000000010110 0001000101010110001011001000100000000010000100011000111000110100
-     *   version:   0
-     *   type:      0
-     *   read operator 0 (length of subpackages in 15 bits: 000000000010110 = 22)
-     *     binary: 000 100 01010 101 100 01011
-     *     version: 0
-     *     type:    4
-     *     literal: 10
-     *     ---
-     *     version: 5
-     *     type:    4
-     *     literal: 11
-     *   binary: 001 000 1 00000000010 000100011000111000110100
-     *   version:   1
-     *   type:      0
-     *   read operator 1(# of subpackages in 11 bits:  00000000010 = 2)
-     *     binary: 000 100 01100 011 100 01101 00
-     *     version: 0
-     *     type:    4
-     *     literal: 12
-     *     ---
-     *     version: 3
-     *     type:    4
-     *     literal: 13
+     * binary:    000 000 0 000000000010110 0001000101010110001011001000100000000010000100011000111000110100
+     * version:   0
+     * type:      0
+     * read operator 0 (length of subpackages in 15 bits: 000000000010110 = 22)
+     * binary: 000 100 01010 101 100 01011
+     * version: 0
+     * type:    4
+     * literal: 10
+     * ---
+     * version: 5
+     * type:    4
+     * literal: 11
+     * binary: 001 000 1 00000000010 000100011000111000110100
+     * version:   1
+     * type:      0
+     * read operator 1(# of subpackages in 11 bits:  00000000010 = 2)
+     * binary: 000 100 01100 011 100 01101 00
+     * version: 0
+     * type:    4
+     * literal: 12
+     * ---
+     * version: 3
+     * type:    4
+     * literal: 13
      * remaining: 2 bit
      */
     @Test
@@ -131,30 +130,30 @@ class BitsDecoderTest {
      * version: 6
      * type:    0
      * Read operator 0 (length of subpackages in 15 bit: 000000001010100 = 84)
-     *   binary: 000 000 0 000000000010110 0001000101011010001011 1000001000000000101111000110000010001101
-     *   version:   0
-     *   type:      0
-     *   Read Operator 0 (length of subpackages in 15 bit: 000000000010110 = 22)
-     *     binary: 000 100 01010 110 100 01011
-     *     version: 0
-     *     type:    4
-     *     literal: 10
-     *     ---
-     *     version: 6
-     *     type:    4
-     *     literal: 11
-     *   binary: 100 000 1 00000000010 1111000110000010001101
-     *   version: 4
-     *   type: 0
-     *   read operator 1 (# of subpackages in 11 bit: 00000000010 = 2)
-     *     binary:  111 100 01100 000 100 01101
-     *     version: 7
-     *     type:    4
-     *     literal: 12
-     *     ---
-     *     version: 0
-     *     type:    4
-     *     literal: 13
+     * binary: 000 000 0 000000000010110 0001000101011010001011 1000001000000000101111000110000010001101
+     * version:   0
+     * type:      0
+     * Read Operator 0 (length of subpackages in 15 bit: 000000000010110 = 22)
+     * binary: 000 100 01010 110 100 01011
+     * version: 0
+     * type:    4
+     * literal: 10
+     * ---
+     * version: 6
+     * type:    4
+     * literal: 11
+     * binary: 100 000 1 00000000010 1111000110000010001101
+     * version: 4
+     * type: 0
+     * read operator 1 (# of subpackages in 11 bit: 00000000010 = 2)
+     * binary:  111 100 01100 000 100 01101
+     * version: 7
+     * type:    4
+     * literal: 12
+     * ---
+     * version: 0
+     * type:    4
+     * literal: 13
      */
     @Test
     public void testVersionNumbers4() {
@@ -169,35 +168,35 @@ class BitsDecoderTest {
      * version: 5
      * type:    0
      * read operator 0 (length of subpackages in 15 bit: 000000001011011 = 91)
-     *   binary: 001 000 1 00000000001 0110001000000001011111000011011010000110101100011000101000111101010001111
-     *   version:   1
-     *   type:      0
-     *   read operator 1 (# of subpackages in 11 bit: 00000000001 = 1)
-     *     binary: 011 000 1 00000000101 1111000011011010000110101100011000101000111101010001111
-     *     version: 3
-     *     type:    0
-     *     read operator 1 (# of subpackages in 11 bit: 00000000101 = 5)
-     *       binary: sp: 111 100 00110 sp: 110 100 00110 sp: 101 100 01100 sp: 010 100 01111 sp: 010 100 01111
-     *       version:   7
-     *       type:      4
-     *       literal:   6
-     *       ---
-     *       version:   6
-     *       type:      4
-     *       literal:   6
-     *       ---
-     *       version:   5
-     *       type:      4
-     *       literal:   12
-     *       ---
-     *       version:   2
-     *       type:      4
-     *       literal:   15
-     *       ---
-     *       version:   2
-     *       type:      4
-     *       literal:   15
-     * */
+     * binary: 001 000 1 00000000001 0110001000000001011111000011011010000110101100011000101000111101010001111
+     * version:   1
+     * type:      0
+     * read operator 1 (# of subpackages in 11 bit: 00000000001 = 1)
+     * binary: 011 000 1 00000000101 1111000011011010000110101100011000101000111101010001111
+     * version: 3
+     * type:    0
+     * read operator 1 (# of subpackages in 11 bit: 00000000101 = 5)
+     * binary: sp: 111 100 00110 sp: 110 100 00110 sp: 101 100 01100 sp: 010 100 01111 sp: 010 100 01111
+     * version:   7
+     * type:      4
+     * literal:   6
+     * ---
+     * version:   6
+     * type:      4
+     * literal:   6
+     * ---
+     * version:   5
+     * type:      4
+     * literal:   12
+     * ---
+     * version:   2
+     * type:      4
+     * literal:   15
+     * ---
+     * version:   2
+     * type:      4
+     * literal:   15
+     */
     @Test
     public void testVersionNumbers5() {
         BitsDecoder submarine = new BitsDecoder();
