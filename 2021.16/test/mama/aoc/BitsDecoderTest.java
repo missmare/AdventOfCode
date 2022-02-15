@@ -224,8 +224,64 @@ class BitsDecoderTest {
     @Test
     public void testSecond1() {
         BitsDecoder submarine = new BitsDecoder();
-        int totalVersionNumber = submarine.getVersionNumbers(secondPath1);
-        assertEquals(14, totalVersionNumber);
+        long literal = submarine.getLiteral(secondPath1);
+        assertEquals(3, literal);
+    }
+
+    @Test
+    public void testSecond2() {
+        BitsDecoder submarine = new BitsDecoder();
+        long literal = submarine.getLiteral(secondPath2);
+        assertEquals(54, literal);
+    }
+
+    @Test
+    public void testSecond3() {
+        BitsDecoder submarine = new BitsDecoder();
+        long literal = submarine.getLiteral(secondPath3);
+        assertEquals(7, literal);
+    }
+
+    @Test
+    public void testSecond4() {
+        BitsDecoder submarine = new BitsDecoder();
+        long literal = submarine.getLiteral(secondPath4);
+        assertEquals(9, literal);
+    }
+
+    @Test
+    public void testSecond5() {
+        BitsDecoder submarine = new BitsDecoder();
+        long literal = submarine.getLiteral(secondPath5);
+        assertEquals(1, literal);
+    }
+
+    @Test
+    public void testSecond6() {
+        BitsDecoder submarine = new BitsDecoder();
+        long literal = submarine.getLiteral(secondPath6);
+        assertEquals(0, literal);
+    }
+
+    @Test
+    public void testSecond7() {
+        BitsDecoder submarine = new BitsDecoder();
+        long literal = submarine.getLiteral(secondPath7);
+        assertEquals(0, literal);
+    }
+
+    @Test
+    public void testSecond8() {
+        BitsDecoder submarine = new BitsDecoder();
+        long literal = submarine.getLiteral(secondPath8);
+        assertEquals(1, literal);
+    }
+
+    @Test
+    public void testSecondBig() {
+        BitsDecoder submarine = new BitsDecoder();
+        long literal = submarine.getLiteral(bigPath);
+        assertEquals(12301926782560L, literal);
     }
 
 }
