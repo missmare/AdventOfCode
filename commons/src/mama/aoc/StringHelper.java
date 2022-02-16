@@ -45,9 +45,20 @@ public class StringHelper {
             String line = stringList.get(i);
             intMap.add(new ArrayList<>(line.length()));
             for (Character character : line.toCharArray()) {
-                intMap.get(i).add(Integer.parseInt(character + ""));
+                intMap.get(i).add(Integer.valueOf(character + ""));
             }
         }
         return intMap;
+    }
+
+    public static int[][] convertToIntegerArray(List<String> stringList) {
+        int[][] intArray = new int[stringList.size()][stringList.get(0).length()];
+        for (int i = 0; i < stringList.size(); i++) {
+            String[] line = stringList.get(i).split("");
+            for (int j = 0; j < line.length; j++) {
+                intArray[i][j] = Integer.parseInt(line[j]);
+            }
+        }
+        return intArray;
     }
 }
