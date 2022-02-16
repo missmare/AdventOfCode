@@ -23,6 +23,23 @@ public class OctopusFlash {
         return countFlashes;
     }
 
+    public int getNumberOfStepsForSimultaneousFlash(String path) {
+        List<String> strings = FileReader.readFile(path);
+        int[][] energyLevel = StringHelper.convertToIntegerArray(strings);
+
+        maxX = energyLevel.length;
+        maxY = energyLevel[0].length;
+
+        int simultaneousFlash = maxX * maxY;
+        int numberOfFlashes =0;
+        int step = 0;
+        while (numberOfFlashes != simultaneousFlash) {
+            numberOfFlashes = executeStep(energyLevel, true);
+            step++;
+        }
+        return step;
+    }
+
     private int executeStep(int[][] energyLevel, boolean outerStep) {
         int numberOfFlashes = 0;
 

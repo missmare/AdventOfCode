@@ -24,4 +24,20 @@ class OctopusFlashTest {
         assertEquals(1673, i);
     }
 
+    @Test
+    public void testSimultaneousSmall() {
+        OctopusFlash submarine = new OctopusFlash();
+        int i = submarine.getNumberOfStepsForSimultaneousFlash(smallPath);
+        System.out.println("number of steps for simultaneous flashes: " + i );
+        assertEquals(195, i);
+    }
+
+    @Test
+    public void testSimultaneousBig() {
+        OctopusFlash submarine = new OctopusFlash();
+        int i = submarine.getNumberOfStepsForSimultaneousFlash(bigPath);
+        System.out.println("number of steps for simultaneous flashes: " + i );
+        assertEquals(279, i);
+    }
+
 }
