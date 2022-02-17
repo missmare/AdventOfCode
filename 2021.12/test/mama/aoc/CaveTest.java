@@ -43,5 +43,37 @@ class CaveTest {
         System.out.println("There are " + i + " paths through the cave");
         assertEquals(3450, i);
     }
+    @Test
+    public void testSecondSmallCave1() {
+        Cave submarine = new Cave();
+        int i = submarine.countSecondPaths(smallCave1);
+        System.out.println("There are " + i + " paths through the cave");
+        assertEquals(36, i);
+    }
+
+    @Test
+    public void testSecondSmallCave2() {
+        Cave submarine = new Cave();
+        int i = submarine.countSecondPaths(smallCave2);
+        System.out.println("There are " + i + " paths through the cave");
+        assertEquals(103, i);
+    }
+
+    @Test
+    public void testSecondSmallCave3() {
+        Cave submarine = new Cave();
+        int i = submarine.countSecondPaths(smallCave3);
+        System.out.println("There are " + i + " paths through the cave");
+        assertEquals(3509, i);
+    }
+
+
+    @Test
+    public void testSecondBigCave() {
+        Cave submarine = new Cave();
+        int i = submarine.countSecondPaths(bigPath);
+        System.out.println("There are " + i + " paths through the cave");
+        assertEquals(96528, i);
+    }
 
 }
