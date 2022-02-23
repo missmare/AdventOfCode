@@ -40,4 +40,13 @@ public class FileReader {
         }
     }
 
+    public static String readSingleLine(String path) {
+        List<String> singleLine = FileReader.readFile(path);
+        if (singleLine != null && singleLine.size() == 1) {
+            return singleLine.get(0);
+        } else {
+            return null;
+        }
+    }
+
 }
